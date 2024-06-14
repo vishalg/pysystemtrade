@@ -7,6 +7,7 @@ from syscore.fileutils import (
     delete_file_if_too_old,
 )
 from pathlib import Path
+from syslogging.logger import *
 
 EXTENSION = "parquet"
 
@@ -14,6 +15,7 @@ EXTENSION = "parquet"
 class ParquetAccess(object):
     def __init__(self, parquet_store_path: str):
         self.parquet_store = get_resolved_pathname(parquet_store_path)
+        self.log = get_logger("ParquetAccess")
 
     def get_all_identifiers_with_data_type(self, data_type: str):
         path = self._get_pathname_given_data_type(data_type)
@@ -33,7 +35,12 @@ class ParquetAccess(object):
         filename = self._get_filename_given_data_type_and_identifier(
             data_type=data_type, identifier=identifier
         )
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except FileNotFoundError as exc:
+            self.log.warning(
+                "Could not delete %s because %s", filename, str(exc)
+            )
 
     def write_data_given_data_type_and_identifier(
         self, data_to_write: pd.DataFrame, data_type: str, identifier: str
