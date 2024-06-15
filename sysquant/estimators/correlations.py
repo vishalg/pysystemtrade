@@ -4,6 +4,7 @@ from copy import copy
 from statsmodels.stats.correlation_tools import corr_nearest
 import pandas as pd
 import numpy as np
+import warnings
 
 from dataclasses import dataclass
 from syscore.constants import arg_not_supplied
@@ -249,7 +250,9 @@ class correlationEstimate(Estimate):
             index=new_asset_names,
         )
         bottom_row = pd.concat([l2, r2], axis=1)
-        both_rows = pd.concat([top_row, bottom_row], axis=0)
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=FutureWarning)
+            both_rows = pd.concat([top_row, bottom_row], axis=0)
 
         new_cmatrix = correlationEstimate(
             values=both_rows.values, columns=both_rows.columns
