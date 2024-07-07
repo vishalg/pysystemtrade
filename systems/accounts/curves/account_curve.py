@@ -318,7 +318,12 @@ class accountCurve(pd.Series):
     def hitrate(self):
         no_gains = float(self.gains().shape[0])
         no_losses = float(self.losses().shape[0])
-        return no_gains / (no_losses + no_gains)
+        try:
+            hit_rate = no_gains / (no_losses + no_gains)
+        except ZeroDivisionError:
+            hit_rate = np.nan
+
+        return hit_rate
 
     def rolling_ann_std(self, window=40):
         y = self.as_ts.rolling(window, min_periods=4, center=True).std().to_frame()
@@ -377,7 +382,12 @@ class accountCurve(pd.Series):
         build_stats = []
         for stat_name in stats_list:
             stat_method = getattr(self, stat_name)
-            ans = stat_method()
+
+            try:
+                ans = stat_method()
+            except ZeroDivisionError:
+                ans = np.nan
+
             build_stats.append((stat_name, "{0:.4g}".format(ans)))
 
         comment1 = (
