@@ -91,6 +91,7 @@ def pd_readcsv(
     input_column_mapping: Union[dict, named_object] = arg_not_supplied,
     skiprows: int = 0,
     skipfooter: int = 0,
+    expected_length_of_date: int = EXPECTED_LENGTH_OF_DATE
 ) -> pd.DataFrame:
     """
     Reads a pandas data frame, with time index labelled
@@ -111,11 +112,13 @@ def pd_readcsv(
     ## Add time index as index
     try:
         df = add_datetime_index(
-            df=df, date_index_name=date_index_name, date_format=date_format
+            df=df, date_index_name=date_index_name, date_format=date_format,
+            expected_length_of_date=expected_length_of_date
         )
     except:
         df = add_datetime_index(
-            df=df, date_index_name=date_index_name, date_format=fallback_date_format
+            df=df, date_index_name=date_index_name, date_format=fallback_date_format,
+            expected_length_of_date = EXPECTED_LENGTH_OF_DATE
         )
 
     if input_column_mapping is not arg_not_supplied:
