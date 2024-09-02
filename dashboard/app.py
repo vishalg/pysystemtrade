@@ -302,28 +302,33 @@ def strategy():
     return {}
 
 
-def visible_on_lan() -> bool:
+def dashboard_configuration() -> bool:
     config = get_control_config()
-    visible = config.get_element_or_default("dashboard_visible_on_lan", False)
-
-    visible = str2Bool(visible)
+    visible = config.get_element_or_default("dashboard_configuration", {"visible_on_lan": False})
 
     return visible
 
 
 if __name__ == "__main__":
-    visible = visible_on_lan()
-    if visible:
+    dash_config = dashboard_configuration()
+    if str2Bool(dash_config["visible_on_lan"]):
         data = dataBlob()
-        data.log.warning(
-            "Starting dashboard with web page visible to all - security implications!!!!"
-        )
+        bind_to_ip = "0.0.0.0"
+
+        if "bind_to_ip" in dash_config:
+            bind_to_ip = dash_config["bind_to_ip"]
+            data.log.warning("Bound to IP %s", bind_to_ip)
+        else:
+            data.log.warning(
+                "Starting dashboard with web page visible to all - security implications!!!!"
+            )
+
         app.run(
             threaded=True,
             use_debugger=False,
             use_reloader=False,
             passthrough_errors=True,
-            host="0.0.0.0",
+            host=bind_to_ip,
         )
 
     else:
