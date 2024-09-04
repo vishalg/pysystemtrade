@@ -146,11 +146,18 @@ function update_processes() {
         `)
       $.each(data['process'], function(process, stat) {
         var running = stat['running']
+        var display_class = "orange"
+
         if (running == 'crashed') {
+          display_class = "red"
+        } else if (running == 'running') {
+          display_class = "green"
+        }
+
         $("#processes_status tbody").append(`
           <tr><td>${process}</td>
           <td>${stat['status']}</td>
-          <td class="red">${running}</td>
+          <td class="${display_class}">${running}</td>
           <td>${stat['PID']}</td>
           <td>${stat['previous_process']}</td>
           <td>${stat['prev_process']}</td>
@@ -159,20 +166,6 @@ function update_processes() {
           <td>${stat['start']}</td>
           <td>${stat['end']}</td>
           </tr>`);
-        } else {
-          $("#processes_status tbody").append(`
-          <tr><td>${process}</td>
-          <td>${stat['status']}</td>
-          <td>${running}</td>
-          <td>${stat['PID']}</td>
-          <td>${stat['previous_process']}</td>
-          <td>${stat['prev_process']}</td>
-          <td>${stat['start_time']}</td>
-          <td>${stat['end_time']}</td>
-          <td>${stat['start']}</td>
-          <td>${stat['end']}</td>
-          </tr>`);
-        }
       }
       );
       var now = new Date();
