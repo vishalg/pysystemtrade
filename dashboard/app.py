@@ -19,6 +19,7 @@ from sysproduction.reporting.api import reportingApi
 from sysproduction.data.broker import dataBroker
 from sysproduction.data.control_process import dataControlProcess
 from sysproduction.data.capital import dataCapital
+from sysproduction.data.currency_data import dataCurrency
 from sysproduction.interactive_update_roll_status import (
     modify_roll_state,
     setup_roll_data_with_state_reporting,
@@ -72,10 +73,13 @@ def index():
 @app.route("/capital")
 def capital():
     capital_data = dataCapital(data)
+    currency_data = dataCurrency(data)
     capital_series = capital_data.get_series_of_all_global_capital()
+    base_currency = currency_data.get_base_currency()
+
     now = capital_series.iloc[-1]["Actual"]
     yesterday = capital_series.last("1D").iloc[0]["Actual"]
-    return {"now": now, "yesterday": yesterday}
+    return {"now": now, "yesterday": yesterday, "base_currency": base_currency}
 
 
 @app.route("/costs")
