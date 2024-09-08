@@ -1,6 +1,7 @@
 import datetime
 
 from syscore.exceptions import missingData
+from syscore.constants import named_object
 
 from sysdata.futures.contracts import futuresContractData
 from sysdata.futures.multiple_prices import futuresMultiplePricesData
@@ -27,6 +28,7 @@ from sysproduction.data.production_data_objects import (
 from sysdata.data_blob import dataBlob
 
 missing_expiry = datetime.datetime(1900, 1, 1)
+missing_contract = named_object("missing contract")
 
 
 class dataContracts(productionDataLayerGeneric):

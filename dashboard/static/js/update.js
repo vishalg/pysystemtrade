@@ -3,7 +3,7 @@ function update_capital() {
     type: "GET",
     url: "/capital",
     success: function(data) {
-      $('#capital-tl').html('$'+data['now'].toLocaleString());
+      $('#capital-tl').html(data['now'].toLocaleString("en", {style: "currency", currency: data['base_currency']}));
       if (data['now'] >= data['yesterday']) {
         $('#capital-tl').addClass('green');
       } else {
