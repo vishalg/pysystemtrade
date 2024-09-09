@@ -250,6 +250,7 @@ function update_reconcile() {
         }
       }
       );
+      sorttable.makeSortable(document.getElementById('reconcile_strategy'));
       $.each(data['my'], function(contract, details) {
         var line = `<tr><td>${details['instrument_code']}</td>
           <td>${details['contract_date']}</td>`;
@@ -264,6 +265,7 @@ function update_reconcile() {
         $("#reconcile_contract tbody").append(line);
       }
       );
+      sorttable.makeSortable(document.getElementById('reconcile_contract'));
       $('#breaks-tl').addClass(overall);
       if (data['gateway_ok']) {
         $('#gateway-tl').addClass("green");
@@ -359,6 +361,7 @@ function update_rolls() {
       }
       );
       $("#rolls-tl").removeClass("red orange green").addClass(overall);
+      sorttable.makeSortable(document.getElementById('rolls_status'));
       $("#rolls > div.loading").hide();
       $("#rolls > table").show("slow");
     }
