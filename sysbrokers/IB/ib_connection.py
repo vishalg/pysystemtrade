@@ -61,9 +61,15 @@ class connectionIB(object):
 
         # You can pass a client id yourself, or let IB find one
 
-        self._init_connection(
-            ipaddress=ipaddress, port=port, client_id=client_id, account=account
-        )
+        try: 
+            self._init_connection(
+                ipaddress=ipaddress, port=port, client_id=client_id, account=account
+            )
+        except asyncio.TimeoutError as e:
+            ## Log the timeout as a critical error, this would send an email under the default logger settings
+            ## Error is reraised as we can't really continue and IB gateway needs to be checked out
+            self.log.critical(f"IB connection timed out {e}")
+            raise
 
     def _init_connection(
         self, ipaddress: str, port: int, client_id: int, account=arg_not_supplied
