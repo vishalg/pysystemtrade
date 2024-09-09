@@ -8,7 +8,6 @@ from ib_insync.order import (
 
 from syscore.exceptions import missingContract
 from syscore.constants import arg_not_supplied
-from sysproduction.data.contracts import missing_contract
 from sysexecution.orders.named_order_objects import missing_order
 from sysbrokers.IB.client.ib_contracts_client import ibContractsClient
 from sysbrokers.IB.ib_translate_broker_order_objects import (
@@ -62,7 +61,7 @@ class ibOrdersClient(ibContractsClient):
             order for order in [
                 self.safe_add_contract_legs_to_order(raw_order_from_ib)
                 for raw_order_from_ib in trades_in_broker_format_this_account
-            ] if order is not missing_contract
+            ] if order is not missing_order
         ]
 
         trade_list = listOfTradesWithContracts(trades_in_broker_format_with_legs)
@@ -75,8 +74,8 @@ class ibOrdersClient(ibContractsClient):
         try:
             return self.add_contract_legs_to_order(raw_order_from_ib)
         except missingContract:
-            self.log.critical("Missing contract for order %s", raw_order_from_ib)
-            return missing_contract
+            self.log.warning("Missing contract for leg in the order %s", raw_order_from_ib)
+            return missing_order
 
     def add_contract_legs_to_order(
         self, raw_order_from_ib: ibTrade
