@@ -89,6 +89,7 @@ function update_liquidity() {
           ${risk}</tr>`
         );
       });
+      sorttable.makeSortable(document.getElementById('liquidity_table'));
       $("#liquidity > div.loading").hide();
       $("#liquidity > table").show("slow");
     }
