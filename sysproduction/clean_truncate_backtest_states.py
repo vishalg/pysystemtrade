@@ -21,11 +21,12 @@ class cleanTruncateBacktestStates:
             "Deleting old .pck and .yaml backtest state files in directory %s"
             % directory_to_use
         )
+        # Delete old .pck and .yaml files from local backup - offsite backup has more storage
         delete_old_files_with_extension_in_pathname(
-            directory_to_use, days_old=30, extension=".pck"
+            directory_to_use, days_old=7, extension=".pck"
         )
         delete_old_files_with_extension_in_pathname(
-            directory_to_use, days_old=30, extension=".yaml"
+            directory_to_use, days_old=7, extension=".yaml"
         )
 
 
