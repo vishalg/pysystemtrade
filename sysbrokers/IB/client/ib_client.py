@@ -197,9 +197,14 @@ class ibClient(object):
         allow_expired: bool = False,
         allow_multiple_contracts: bool = False,
     ) -> Union[ibContractDetails, List[ibContractDetails]]:
-        contract_details = self._get_contract_details(
-            ib_contract_pattern, allow_expired=allow_expired
-        )
+        try:
+            contract_details = self._get_contract_details(
+                ib_contract_pattern, allow_expired=allow_expired
+            )
+        except Exception as e:
+            # IB connection error, log and re-raise - we can't continue
+            self.log.critical(f"Error fetching contract details from IB - {e}")
+            raise
 
         if len(contract_details) == 0:
             raise missingContract

@@ -65,10 +65,10 @@ class connectionIB(object):
             self._init_connection(
                 ipaddress=ipaddress, port=port, client_id=client_id, account=account
             )
-        except asyncio.TimeoutError as e:
-            ## Log the timeout as a critical error, this would send an email under the default logger settings
-            ## Error is reraised as we can't really continue and IB gateway needs to be checked out
-            self.log.critical(f"IB connection timed out {e}")
+        except Exception as e:
+            # Log the timeout as a critical error, this would send an email under the default logger settings
+            # Error is reraised as we can't really continue and IB gateway needs to be checked out
+            self.log.critical(f"IB connection timed out with exception - {e}, connection aborted.")
             raise
 
     def _init_connection(
