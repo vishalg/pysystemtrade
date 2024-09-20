@@ -1,37 +1,28 @@
+import asyncio
+import json
+
+import pandas as pd
 from flask import Flask, g, render_template, request
 from werkzeug.local import LocalProxy
 
-from syscore.genutils import str2Bool
-
 from syscontrol.list_running_pids import describe_trading_server_login_data
-
 from sysdata.config.control_config import get_control_config
-
 from sysdata.data_blob import dataBlob
-
-from sysobjects.production.roll_state import (
-    RollState,
-)
-
-
-from sysproduction.reporting.api import reportingApi
-
+from sysobjects.production.roll_state import RollState
 from sysproduction.data.broker import dataBroker
-from sysproduction.data.control_process import dataControlProcess
 from sysproduction.data.capital import dataCapital
+from sysproduction.data.control_process import dataControlProcess
 from sysproduction.data.currency_data import dataCurrency
 from sysproduction.interactive_update_roll_status import (
-    modify_roll_state,
-    setup_roll_data_with_state_reporting,
-)
+    modify_roll_state, setup_roll_data_with_state_reporting)
+from sysproduction.reporting.api import reportingApi
 from sysproduction.reporting.data.rolls import rollingAdjustedAndMultiplePrices
 
-import asyncio
-import json
-import pandas as pd
-
 app = Flask(__name__)
-LOCALHOST_IP = "127.0.0.1"
+
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = 5000
+
 
 def get_data():
     if not hasattr(g, "data"):
@@ -315,30 +306,30 @@ def dashboard_configuration() -> bool:
 
 if __name__ == "__main__":
     dash_config = dashboard_configuration()
-    if str2Bool(dash_config["visible_on_lan"]):
-        setup_data = dataBlob(log_name="dashboard-setup")
-        bind_to_ip = LOCALHOST_IP
+    setup_data = dataBlob(log_name="dashboard-setup")
+    host = DEFAULT_HOST
+    port = DEFAULT_PORT
 
-        if "bind_to_ip" in dash_config:
-            bind_to_ip = dash_config["bind_to_ip"]
-            setup_data.log.warning("Bound to IP %s", bind_to_ip)
-        else:
-            setup_data.log.warning(
-                "Starting dashboard with web page visible to all - security implications!!!!"
-            )
-
-        app.run(
-            threaded=True,
-            use_debugger=False,
-            use_reloader=False,
-            passthrough_errors=True,
-            host=bind_to_ip,
+    try:
+        host = dash_config["host"]
+    except Exception:
+        setup_data.log.warning(
+            "Can't get host from config, using %s",
+            DEFAULT_HOST
         )
 
-    else:
-        app.run(
-            threaded=True,
-            use_debugger=False,
-            use_reloader=False,
-            passthrough_errors=True,
+    try:
+        port = dash_config["port"]
+    except Exception:
+        setup_data.log.warning(
+            "Can't get port from config, using default: %s",
+            DEFAULT_PORT
         )
+
+    app.run(
+        threaded=True,
+        use_debugger=False,
+        use_reloader=False,
+        passthrough_errors=True,
+        host=host,
+    )

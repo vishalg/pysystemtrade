@@ -145,4 +145,5 @@ process_configuration_methods:
 #      object: sysexecution.strategies.classic_buffered_positions.orderGeneratorForBufferedPositions
 #      max_executions: 1
 dashboard_configuration:
-  visible_on_lan: False
+  host: 127.0.0.1
+  port: 5000
