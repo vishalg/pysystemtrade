@@ -33,6 +33,14 @@ class MailType(Enum):
         return self.value
 
 
+class SMTPConnectionSecurity(str, Enum):
+    starttls = "starttls"
+    ssl_tls = "ssl/tls"
+
+    def __str__(self):
+        return self.value
+
+
 def send_mail_msg(body: str, subject: str, mail_type: MailType = MailType.plain):
     msg = MIMEMultipart()
     msg["Subject"] = subject
@@ -77,7 +85,7 @@ def _send_msg(msg: MIMEMultipart):
     """
     Send a message composed by other things
     """
-    email_server, email_address, email_pwd, email_to, email_port = get_email_details()
+    email_server, email_address, email_pwd, email_to, email_port, email_security = get_email_details()
 
     me = email_address
     you = email_to
@@ -87,15 +95,12 @@ def _send_msg(msg: MIMEMultipart):
     # Send the message via our own SMTP server, but don't include the
     # envelope header.
     s: smtplib.SMTP
-    try:
-        s = smtplib.SMTP_SSL(email_server, email_port)
-    except ssl.SSLError:
+    if email_security.lower() == SMTPConnectionSecurity.starttls:
         s = smtplib.SMTP(email_server, email_port)
-
-    try:
         s.starttls()
-    except:
-        pass
+    elif email_security.lower() == SMTPConnectionSecurity.ssl_tls:
+        s = smtplib.SMTP_SSL(email_server, email_port)
+
     s.login(email_address, email_pwd)
     s.sendmail(me, [you], msg.as_string())
     s.quit()
@@ -110,10 +115,16 @@ def get_email_details():
         email_server = production_config.email_server
         email_to = production_config.email_to
         email_port = production_config.email_port
-    except:
+
+        if hasattr(production_config, "email_security"):
+            email_security = production_config.email_security
+        else:
+            email_security = SMTPConnectionSecurity.starttls
+    except Exception as e:
+        print(e)
         raise Exception(
             "Need to have all of these for email to work in private config: email_address, email_pwd, email_server, email_to",
             "email_port",
         )
 
-    return email_server, email_address, email_pwd, email_to, email_port
+    return email_server, email_address, email_pwd, email_to, email_port, email_security
