@@ -31,7 +31,7 @@ import json
 import pandas as pd
 
 app = Flask(__name__)
-
+LOCALHOST_IP = "127.0.0.1"
 
 def get_data():
     if not hasattr(g, "data"):
@@ -308,7 +308,7 @@ def strategy():
 
 def dashboard_configuration() -> bool:
     config = get_control_config()
-    visible = config.get_element_or_default("dashboard_configuration", {"visible_on_lan": False})
+    visible = config.get_element("dashboard_configuration")
 
     return visible
 
@@ -317,7 +317,7 @@ if __name__ == "__main__":
     dash_config = dashboard_configuration()
     if str2Bool(dash_config["visible_on_lan"]):
         setup_data = dataBlob(log_name="dashboard-setup")
-        bind_to_ip = "0.0.0.0"
+        bind_to_ip = LOCALHOST_IP
 
         if "bind_to_ip" in dash_config:
             bind_to_ip = dash_config["bind_to_ip"]

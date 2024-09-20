@@ -144,3 +144,5 @@ process_configuration_methods:
 #    example:
 #      object: sysexecution.strategies.classic_buffered_positions.orderGeneratorForBufferedPositions
 #      max_executions: 1
+dashboard_configuration:
+  visible_on_lan: False
