@@ -316,14 +316,14 @@ def dashboard_configuration() -> bool:
 if __name__ == "__main__":
     dash_config = dashboard_configuration()
     if str2Bool(dash_config["visible_on_lan"]):
-        data = dataBlob()
+        setup_data = dataBlob(log_name="dashboard-setup")
         bind_to_ip = "0.0.0.0"
 
         if "bind_to_ip" in dash_config:
             bind_to_ip = dash_config["bind_to_ip"]
-            data.log.warning("Bound to IP %s", bind_to_ip)
+            setup_data.log.warning("Bound to IP %s", bind_to_ip)
         else:
-            data.log.warning(
+            setup_data.log.warning(
                 "Starting dashboard with web page visible to all - security implications!!!!"
             )
 
