@@ -282,18 +282,24 @@ def update_historical_prices_for_list_of_instrument_codes(
 ):
     cleaning_config = get_config_for_price_filtering(data)
 
-    for instrument_code in list_of_instrument_codes:
+    total_instruments = len(list_of_instrument_codes)
+    instruments_processed = 0
+    for instrument_code in sorted(list_of_instrument_codes):
         data.log.debug(
             "Updating log attributes",
             method="clear",
             instrument_code=instrument_code,
         )
+        data.log.info("Updating prices for %s [%i/%i]", instrument_code,
+                      instruments_processed + 1,
+                      total_instruments)
         update_historical_prices_for_instrument(
             instrument_code,
             data,
             cleaning_config=cleaning_config,
             interactive_mode=False,
         )
+        instruments_processed += 1
 
 
 ## This is also called by the interactive update

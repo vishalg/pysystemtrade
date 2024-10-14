@@ -50,6 +50,7 @@ class RemoveMarketData:
     auto_parameters: parametersForAutoPopulation
 
     existing_bad_markets: list
+    exclude_markets: list
 
     @property
     def str_existing_markets_to_remove(self) -> str:
@@ -118,6 +119,7 @@ class RemoveMarketData:
 
     def removed_markets_addback(self) -> list:
         existing_bad_markets = self.existing_bad_markets
+        exclude_markets = self.exclude_markets
 
         ## To be allowed to trade an existing bad market must be well above the threshold for not being a bad market
         bad_markets = self.bad_markets(apply_higher_threshold=True)
@@ -126,7 +128,8 @@ class RemoveMarketData:
             set(existing_bad_markets).difference(set(bad_markets))
         )
 
-        return removed_bad_markets
+        # Don't add back stale and ignored markets
+        return [market for market in removed_bad_markets if market not in exclude_markets]
 
     def bad_markets(
         self, apply_higher_threshold=False, apply_lower_threshold=False
@@ -327,6 +330,7 @@ def get_remove_market_data(data) -> RemoveMarketData:
         min_volume_contracts=min_volume_contracts,
         existing_bad_markets=existing_bad_markets,
         auto_parameters=auto_parameters,
+        exclude_markets=exclude_instruments
     )
 
 
@@ -424,13 +428,6 @@ def get_stale_instruments(data) -> list:
     stale_instruments = get_list_of_stale_instruments_given_config(production_config)
 
     return stale_instruments
-
-
-def get_ignored_instruments(data) -> list:
-    production_config = data.config
-    ignored_instruments = get_list_of_ignored_instruments_in_config(production_config)
-
-    return ignored_instruments
 
 
 def get_list_of_bad_markets(data):

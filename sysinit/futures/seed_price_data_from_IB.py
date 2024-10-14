@@ -1,4 +1,5 @@
 from syscore.exceptions import missingData
+from sysobjects.contracts import contractDate, expiryDate
 from sysbrokers.IB.ib_futures_contract_price_data import (
     futuresContract,
 )
@@ -10,7 +11,7 @@ from sysproduction.data.prices import updatePrices
 from sysproduction.update_historical_prices import write_merged_prices_for_contract
 
 
-def seed_price_data_from_IB(instrument_code):
+def seed_price_data_from_IB(instrument_code, shift_month=False):
     data = dataBlob()
     data_broker = dataBroker(data)
 
@@ -25,8 +26,18 @@ def seed_price_data_from_IB(instrument_code):
         ## which don't expire in the month they are labelled with
         ## So for example, CRUDE_W 202106 actually expires on 20210528
 
-        date_str = contract_date[:6]
-        contract_object = futuresContract(instrument_code, date_str)
+        if shift_month:
+            year = int(contract_date[:4])
+            month = int(contract_date[4:6])
+            day = int(contract_date[6:8])
+            adj_month = month % 12 + 1
+            adj_year = year + month // 12
+            contract_date = contractDate(f"{adj_year}{adj_month:02}", expiryDate(year, month, day))
+        else:
+            date_str = contract_date[:6]
+            contract_date = contractDate(date_str)
+
+        contract_object = futuresContract(instrument_code, contract_date)
 
         seed_price_data_for_contract(data=data, contract_object=contract_object)
 
