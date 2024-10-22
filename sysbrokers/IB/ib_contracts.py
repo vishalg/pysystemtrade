@@ -21,7 +21,7 @@ EUREX_DAY_FLAG = "D"
 
 LME_CODES = [
     "ALUMINIUM_LME",
-     "COPPER_LME",
+    "COPPER_LME",
     "LEAD_LME",
     "NICKEL_LME",
     "TIN_LME",
