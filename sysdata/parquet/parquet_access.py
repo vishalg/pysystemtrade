@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from syscore.exceptions import missingFile
 from syscore.fileutils import (
     files_with_extension_in_pathname,
     resolve_path_and_filename_for_package,
@@ -37,10 +38,8 @@ class ParquetAccess(object):
         )
         try:
             os.remove(filename)
-        except FileNotFoundError as exc:
-            self.log.warning(
-                "Could not delete %s because %s", filename, str(exc)
-            )
+        except FileNotFoundError:
+            raise missingFile(f"File '{filename}' does not exist")
 
     def write_data_given_data_type_and_identifier(
         self, data_to_write: pd.DataFrame, data_type: str, identifier: str
