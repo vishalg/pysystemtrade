@@ -124,12 +124,12 @@ class RemoveMarketData:
         ## To be allowed to trade an existing bad market must be well above the threshold for not being a bad market
         bad_markets = self.bad_markets(apply_higher_threshold=True)
 
+        # Markets to be added back = (existing bad markets - new bad markets) - (ignored and stale instruments)
         removed_bad_markets = list(
-            set(existing_bad_markets).difference(set(bad_markets))
+            set(existing_bad_markets).difference(set(bad_markets)).difference(set(exclude_markets))
         )
 
-        # Don't add back stale and ignored markets
-        return [market for market in removed_bad_markets if market not in exclude_markets]
+        return removed_bad_markets
 
     def bad_markets(
         self, apply_higher_threshold=False, apply_lower_threshold=False

@@ -746,7 +746,7 @@ dict_of_functions = {
     66: risk_report,
     67: cost_report,
     68: slippage_report,
-    69: commissions_report,
+    69: commission_report,
     70: liquidity_report,
     71: instrument_risk_report,
     72: min_capital_report,
