@@ -332,4 +332,5 @@ if __name__ == "__main__":
         use_reloader=False,
         passthrough_errors=True,
         host=host,
+        port=port,
     )
