@@ -61,14 +61,17 @@ class connectionIB(object):
 
         # You can pass a client id yourself, or let IB find one
 
-        try: 
+        try:
             self._init_connection(
                 ipaddress=ipaddress, port=port, client_id=client_id, account=account
             )
         except Exception as e:
-            # Log the timeout as a critical error, this would send an email under the default logger settings
-            # Error is reraised as we can't really continue and IB gateway needs to be checked out
-            self.log.critical(f"IB connection timed out with exception - {e}, connection aborted.")
+            # Log all exceptions generated during connection as critical error.
+            # Under the default production setup this should send an email.
+            # Error is reraised as we can't really continue and user intervention is required
+            self.log.critical(
+                f"IB connection falied with exception - {e}, connection aborted."
+            )
             raise
 
     def _init_connection(
