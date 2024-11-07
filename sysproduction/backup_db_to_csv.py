@@ -28,7 +28,11 @@ from sysdata.csv.csv_spreads import csvSpreadsForInstrumentData
 from sysobjects.contracts import futuresContract
 from sysobjects.production.tradeable_object import instrumentStrategy
 
-from sysproduction.data.directories import get_csv_backup_directory, get_csv_dump_dir
+from sysproduction.data.directories import (
+        get_csv_backup_directory,
+        get_csv_dump_dir,
+        add_trailing_slash
+        )
 from sysproduction.data.strategies import get_list_of_strategies
 
 from sysproduction.data.production_data_objects import *
@@ -484,7 +488,8 @@ def backup_csv_dump(data):
     source_path = get_csv_dump_dir()
     destination_path = get_csv_backup_directory()
     data.log.debug("Copy from %s to %s" % (source_path, destination_path))
-    os.system("rsync -av %s %s" % (source_path, destination_path))
+    os.system("rsync -av %s %s" % (add_trailing_slash(source_path),
+                                   add_trailing_slash(destination_path)))
 
 
 if __name__ == "__main__":

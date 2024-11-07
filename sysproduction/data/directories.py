@@ -63,3 +63,7 @@ def get_echo_file_directory():
 def get_echo_extension():
     ans = production_config.get_element("echo_extension")
     return ans
+
+def add_trailing_slash(path):
+    # Adds a trailing slash - use this for rsync otherwise it creates a further subdirectory
+    return os.path.join(path, "")
