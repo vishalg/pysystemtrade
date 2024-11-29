@@ -790,7 +790,7 @@ class ForecastCombine(SystemStage):
     ) -> list:
         """
         Returns a list of trading rules which are cheap enough to trade, given a max tolerable
-          annualised SR cost
+        annualised SR cost
 
         :param instrument_code:
         :type str:
@@ -823,8 +823,8 @@ class ForecastCombine(SystemStage):
 
         else:
             self.log.debug(
-                "Only this set of rules %s is cheap enough to trade for %s"
-                % (str(cheap_rule_list), instrument_code),
+                "Only this set of rules %s is cheap enough to trade for %s with a threshold of %.3f SR units"
+                % (str(cheap_rule_list), instrument_code, ceiling_cost_SR),
                 instrument_code=instrument_code,
             )
 
