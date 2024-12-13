@@ -190,8 +190,10 @@ class systemDiag(object):
         for instrument in instrument_list:
             fdm = system.combForecast.get_forecast_diversification_multiplier(
                 instrument
-            ).values[-1]
-            fdm_results[instrument] = float(fdm)
+            )
+
+            if len(fdm) > 0:
+                fdm_results[instrument] = float(fdm.values[-1])
 
         return fdm_results
 
