@@ -10,7 +10,11 @@ from syscore.fileutils import (
 )
 from syscore.constants import arg_not_supplied
 from syscore.dateutils import MIXED_FREQ, Frequency
-from syscore.pandas.pdutils import pd_readcsv, DEFAULT_DATE_FORMAT_FOR_CSV, EXPECTED_LENGTH_OF_DATE
+from syscore.pandas.pdutils import (
+    pd_readcsv,
+    DEFAULT_DATE_FORMAT_FOR_CSV,
+    EXPECTED_LENGTH_OF_DATE,
+)
 
 
 @dataclass
@@ -89,7 +93,7 @@ class csvFuturesContractPriceData(futuresContractPriceData):
                 input_column_mapping=input_column_mapping,
                 skiprows=skiprows,
                 skipfooter=skipfooter,
-                expected_length_of_date=expected_length_of_date
+                expected_length_of_date=expected_length_of_date,
             )
         except OSError:
             self.log.warning(

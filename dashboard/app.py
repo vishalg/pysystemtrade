@@ -14,7 +14,9 @@ from sysproduction.data.capital import dataCapital
 from sysproduction.data.control_process import dataControlProcess
 from sysproduction.data.currency_data import dataCurrency
 from sysproduction.interactive_update_roll_status import (
-    modify_roll_state, setup_roll_data_with_state_reporting)
+    modify_roll_state,
+    setup_roll_data_with_state_reporting,
+)
 from sysproduction.reporting.api import reportingApi
 from sysproduction.reporting.data.rolls import rollingAdjustedAndMultiplePrices
 
@@ -313,17 +315,13 @@ if __name__ == "__main__":
     try:
         host = dash_config["host"]
     except Exception:
-        setup_data.log.warning(
-            "Can't get host from config, using %s",
-            DEFAULT_HOST
-        )
+        setup_data.log.warning("Can't get host from config, using %s", DEFAULT_HOST)
 
     try:
         port = dash_config["port"]
     except Exception:
         setup_data.log.warning(
-            "Can't get port from config, using default: %s",
-            DEFAULT_PORT
+            "Can't get port from config, using default: %s", DEFAULT_PORT
         )
 
     app.run(

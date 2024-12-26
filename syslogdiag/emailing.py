@@ -85,7 +85,14 @@ def _send_msg(msg: MIMEMultipart):
     """
     Send a message composed by other things
     """
-    email_server, email_address, email_pwd, email_to, email_port, email_security = get_email_details()
+    (
+        email_server,
+        email_address,
+        email_pwd,
+        email_to,
+        email_port,
+        email_security,
+    ) = get_email_details()
 
     me = email_address
     you = email_to

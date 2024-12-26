@@ -3,7 +3,7 @@ import os
 from sysproduction.data.directories import (
     get_statefile_directory,
     get_statefile_backup_directory,
-    add_trailing_slash
+    add_trailing_slash,
 )
 from sysdata.data_blob import dataBlob
 
@@ -30,8 +30,10 @@ def backup_state_files_with_data_object(data):
     source_path = get_statefile_directory()
     destination_path = get_statefile_backup_directory()
     data.log.debug("Copy from %s to %s" % (source_path, destination_path))
-    os.system("rsync -av %s %s" % (add_trailing_slash(source_path),
-                                   add_trailing_slash(destination_path)))
+    os.system(
+        "rsync -av %s %s"
+        % (add_trailing_slash(source_path), add_trailing_slash(destination_path))
+    )
 
 
 if __name__ == "__main__":

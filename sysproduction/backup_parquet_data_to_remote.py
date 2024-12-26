@@ -1,7 +1,10 @@
 import os
 from sysdata.config.production_config import get_production_config
 
-from sysproduction.data.directories import get_parquet_backup_directory, add_trailing_slash
+from sysproduction.data.directories import (
+    get_parquet_backup_directory,
+    add_trailing_slash,
+)
 
 from sysdata.data_blob import dataBlob
 
@@ -33,8 +36,10 @@ def backup_parquet_data_to_remote_with_data(data):
     source_path = get_parquet_directory(data)
     destination_path = get_parquet_backup_directory()
     data.log.debug("Copy from %s to %s" % (source_path, destination_path))
-    os.system("rsync -av %s %s" % (add_trailing_slash(source_path),
-                                   add_trailing_slash(destination_path)))
+    os.system(
+        "rsync -av %s %s"
+        % (add_trailing_slash(source_path), add_trailing_slash(destination_path))
+    )
 
 
 if __name__ == "__main__":

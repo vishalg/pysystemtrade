@@ -78,7 +78,9 @@ def get_output_for_system_object(data: dataBlob, strategy_name: str, system):
         data, strategy_name
     )
     timestamp = datetime.now().strftime(MARKER_DATE_FORMAT)
-    backtest = interactiveBacktest(system=system, timestamp=timestamp, strategy_name=strategy_name)
+    backtest = interactiveBacktest(
+        system=system, timestamp=timestamp, strategy_name=strategy_name
+    )
     strategy_format_output_list = strategy_reporting_function(data, backtest)
 
     return strategy_format_output_list

@@ -32,7 +32,9 @@ def seed_price_data_from_IB(instrument_code, shift_month=False):
             day = int(contract_date[6:8])
             adj_month = month % 12 + 1
             adj_year = year + month // 12
-            contract_date = contractDate(f"{adj_year}{adj_month:02}", expiryDate(year, month, day))
+            contract_date = contractDate(
+                f"{adj_year}{adj_month:02}", expiryDate(year, month, day)
+            )
         else:
             date_str = contract_date[:6]
             contract_date = contractDate(date_str)

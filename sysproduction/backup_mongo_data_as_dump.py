@@ -4,7 +4,7 @@ from sysdata.config.production_config import get_production_config
 from sysproduction.data.directories import (
     get_mongo_dump_directory,
     get_mongo_backup_directory,
-    add_trailing_slash
+    add_trailing_slash,
 )
 
 from sysdata.data_blob import dataBlob
@@ -47,8 +47,10 @@ def backup_mongo_dump(data):
     source_path = get_mongo_dump_directory()
     destination_path = get_mongo_backup_directory()
     data.log.debug("Copy from %s to %s" % (source_path, destination_path))
-    os.system("rsync -av %s %s" % (add_trailing_slash(source_path),
-                                   add_trailing_slash(destination_path)))
+    os.system(
+        "rsync -av %s %s"
+        % (add_trailing_slash(source_path), add_trailing_slash(destination_path))
+    )
 
 
 if __name__ == "__main__":

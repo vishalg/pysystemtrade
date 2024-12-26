@@ -290,9 +290,12 @@ def update_historical_prices_for_list_of_instrument_codes(
             method="clear",
             instrument_code=instrument_code,
         )
-        data.log.info("Updating prices for %s [%i/%i]", instrument_code,
-                      instruments_processed + 1,
-                      total_instruments)
+        data.log.info(
+            "Updating prices for %s [%i/%i]",
+            instrument_code,
+            instruments_processed + 1,
+            total_instruments,
+        )
         update_historical_prices_for_instrument(
             instrument_code,
             data,

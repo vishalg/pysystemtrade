@@ -26,8 +26,12 @@ from sysproduction.data.contracts import dataContracts
 from sysproduction.data.optimal_positions import dataOptimalPositions
 from sysproduction.data.sim_data import get_sim_data_object_for_production
 
-#from sysproduction.data.backtest import store_backtest_state
-from sysproduction.reporting.reporting_functions import parse_report_results, output_report, pandas_display_for_reports
+# from sysproduction.data.backtest import store_backtest_state
+from sysproduction.reporting.reporting_functions import (
+    parse_report_results,
+    output_report,
+    pandas_display_for_reports,
+)
 from sysproduction.reporting.strategies_report import get_output_for_system_object
 from sysproduction.data.reports import dataReports
 
@@ -70,8 +74,10 @@ class runSystemClassic(object):
 
         # Pickling backtest leads to OOM errors. So instead create and send the report rightnow
         # Also disable strategy report in private_control_config
-        #store_backtest_state(data, system, strategy_name=strategy_name)
-        report_results = get_output_for_system_object(data=data, strategy_name=strategy_name, system=system)
+        # store_backtest_state(data, system, strategy_name=strategy_name)
+        report_results = get_output_for_system_object(
+            data=data, strategy_name=strategy_name, system=system
+        )
 
         pandas_display_for_reports()
         parsed_report = parse_report_results(data=data, report_results=report_results)
@@ -80,8 +86,9 @@ class runSystemClassic(object):
         all_report_configs = data_reports.get_report_configs_to_run()
         strategy_report_config = all_report_configs.get("strategy_report")
 
-        output_report(parsed_report=parsed_report, report_config=strategy_report_config, data=data)
-
+        output_report(
+            parsed_report=parsed_report, report_config=strategy_report_config, data=data
+        )
 
     ## MODIFY THIS WHEN INHERITING FOR A DIFFERENT STRATEGY
     ## ARGUMENTS MUST BE: data: dataBlob, strategy_name: str, system: System
