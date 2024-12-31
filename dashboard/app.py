@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from flask import Flask, g, render_template, request
 from werkzeug.local import LocalProxy
+from waitress import serve
 
 from syscontrol.list_running_pids import describe_trading_server_login_data
 from sysdata.config.control_config import get_control_config
@@ -323,15 +324,5 @@ if __name__ == "__main__":
         setup_data.log.warning(
             "Can't get port from config, using default: %s", DEFAULT_PORT
         )
-
-    #app.run(
-    #    threaded=True,
-    #    use_debugger=False,
-    #    use_reloader=False,
-    #    passthrough_errors=True,
-    #    host=host,
-    #    port=port,
-    #)
-    from waitress import serve
 
     serve(app, host=host, port=port)
