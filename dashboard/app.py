@@ -324,11 +324,14 @@ if __name__ == "__main__":
             "Can't get port from config, using default: %s", DEFAULT_PORT
         )
 
-    app.run(
-        threaded=True,
-        use_debugger=False,
-        use_reloader=False,
-        passthrough_errors=True,
-        host=host,
-        port=port,
-    )
+    #app.run(
+    #    threaded=True,
+    #    use_debugger=False,
+    #    use_reloader=False,
+    #    passthrough_errors=True,
+    #    host=host,
+    #    port=port,
+    #)
+    from waitress import serve
+
+    serve(app, host=host, port=port)
