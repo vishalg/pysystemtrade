@@ -255,6 +255,7 @@ def pandl_for_instrument_forecast(
     )
     account_curve = pandl_for_position(
         notional_position=notional_position,
+        average_notional_position=average_notional_position,
         SR_cost=SR_cost,
         fx=fx,
         daily_returns_volatility=daily_returns_volatility,
@@ -302,16 +303,15 @@ def _get_normalised_forecast(
 
 def pandl_for_position(
     notional_position: pd.Series,
+    average_notional_position,
     price: pd.Series,
     capital: float = ARBITRARY_FORECAST_CAPITAL,
     fx=arg_not_supplied,
     daily_returns_volatility: pd.Series = arg_not_supplied,
-    SR_cost=0.0,
+        SR_cost=0.0,
     delayfill=True,
     value_per_point=ARBITRARY_VALUE_OF_PRICE_POINT,
 ) -> accountCurve:
-
-    average_notional_position = notional_position.abs().mean()
 
     pandl_calculator = pandlCalculationWithSRCosts(
         price,
