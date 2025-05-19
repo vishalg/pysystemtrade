@@ -2,8 +2,8 @@ from time import sleep
 
 import numpy as np
 import pickle
-from private.projects.MR_2025.broker import  BrokerController
-from private.projects.MR_2025.configuration import SECONDS_PER_UNIT, BARS_REQUIRED_FOR_ESTIMATION, \
+from systems.provided.scalper.broker import  BrokerController
+from systems.provided.scalper.configuration import SECONDS_PER_UNIT, BARS_REQUIRED_FOR_ESTIMATION, \
     StratParameters, init_paramaters, display_diags, interactively_modify_parameters, TIME_BETWEEN_HEARTBEATS, \
     estimate_R_from_prices, get_final_price
 from syscore.constants import arg_not_supplied
@@ -14,7 +14,7 @@ from sysproduction.data.broker import dataBroker
 from sysproduction.data.contracts import dataContracts
 from sysproduction.data.instruments import diagInstruments
 
-from private.projects.MR_2025.components import State, action_given_current_state, ActionFromState, FillAndOrder, Fill
+from systems.provided.scalper.components import State, action_given_current_state, ActionFromState, FillAndOrder, Fill
 from sysexecution.orders.named_order_objects import missing_order
 from sysproduction.data.currency_data import dataCurrency
 import datetime
@@ -558,27 +558,4 @@ if __name__ == '__main__':
     custom = MRRunner(instrument=instrument)
     custom.start()
 
-
-"""
-from private.projects.MR_2025.entry import *
-instrument="NASDAQ"
-self = MRRunner(instrument)
-self.setup(instrument)
-action = action_given_current_state(
-    current_state=self.state,
-    current_price_getter=self.current_mid_price_blocking,
-    R_calculator=self.estimate_of_R_range
-)
-new_state = self.state.update_from_action(action)
-self.update_state_and_list_of_states(new_state)
-list_of_fills_and_orders = [FillAndOrder(fill=Fill(size=-1, price=23406), order=new_state.orders[0])]
-current_price = self.current_mid_price()
-for fill_and_order in list_of_fills_and_orders:
-    new_state = self.state.update_given_broker_fill_and_latest_price(
-        fill=fill_and_order.fill,
-        order=fill_and_order.order,
-        current_price=current_price
-    )
-self.update_state_and_list_of_states(new_state)
-"""
 

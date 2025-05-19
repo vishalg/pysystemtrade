@@ -2,9 +2,9 @@ import datetime
 from dataclasses import dataclass
 from typing import Tuple, List
 
-from build.lib.sysexecution.algos.common_functions import cancel_order
-from private.projects.MR_2025.components import Order, Fill, FillAndOrder
-from private.projects.MR_2025.configuration import STRATEGY_NAME
+from sysexecution.algos.common_functions import cancel_order
+from systems.provided.scalper.components import Order, Fill, FillAndOrder
+from systems.provided.scalper.configuration import STRATEGY_NAME
 from sysdata.data_blob import dataBlob
 from sysexecution.algos.algo import Algo
 from sysexecution.order_stacks.broker_order_stack import orderWithControls
@@ -13,7 +13,6 @@ from sysexecution.orders.broker_orders import create_new_broker_order_from_contr
 from sysexecution.orders.contract_orders import contractOrder
 from sysexecution.orders.named_order_objects import missing_order
 from sysobjects.contracts import futuresContract
-from sysobjects.production.positions import listOfContractPositions, contractPosition
 from sysproduction.data.broker import dataBroker
 
 @dataclass

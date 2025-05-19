@@ -5,7 +5,7 @@ from typing import List, Callable
 
 import numpy as np
 
-from private.projects.MR_2025.configuration import StratParameters, round_to_tick_size
+from systems.provided.scalper.configuration import StratParameters, round_to_tick_size
 from syscore.constants import arg_not_supplied
 
 
