@@ -375,7 +375,7 @@ This will also copy adjusted prices, so you can now skip ahead to [creating FX d
 
 See [this script](https://github.com/robcarver17/pysystemtrade/blob/develop/sysinit/futures/adhoc/update_provided_multiple_prices.py) 
 
-Assuming that you have an Interactive Brokers account, you might want to update the (stale) data that you have [downloaded from the repo](/docs/backtesting.md#setting-up-mongodb-and-parquet) before [calculating back adjusted prices](#creating-and-storing-back-adjusted-prices). [See](#note-on-outdated-shipped-csv-data)
+Assuming that you have an Interactive Brokers account, you might want to update the (stale) data that you have [downloaded from the repo](/docs/backtesting.md#setting-up-mongodb-and-parquet) before [calculating back adjusted prices](#creating-and-storing-back-adjusted-prices). [See this note](#note-on-outdated-shipped-csv-data)
 
 A first step is to [update the sampled contracts available](/docs/production.md#update-sampled-contracts-daily), and [their historical prices](/docs/production.md#update-futures-contract-historical-price-data-daily).  This might entail [manually checking](/docs/production.md#manual-check-of-futures-contract-historical-price-data) historical prices with spikes.
 
