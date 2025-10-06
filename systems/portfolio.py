@@ -642,13 +642,13 @@ class Portfolios(SystemStage):
 
         # these will probably be annual
         optimiser = self.calculation_of_raw_instrument_weights()
-        weights_of_instruments_with_weights = optimiser.weights()
+        instrument_weights = optimiser.weights()
 
-        instrument_weights = self._add_zero_weights_to_instrument_weights_df(
-            weights_of_instruments_with_weights
+        instrument_weights_with_zeros = self._add_zero_weights_to_instrument_weights_df(
+            instrument_weights
         )
 
-        return instrument_weights
+        return instrument_weights_with_zeros
 
     def fit_periods(self):
         # FIXME, NO GUARANTEE THIS OBJECT HAS AN ESTIMATOR UNLESS IT INHERITS FROM
@@ -727,16 +727,10 @@ class Portfolios(SystemStage):
         instrument_list_to_add = (
             self.allocate_zero_instrument_weights_to_these_instruments()
         )
-        weight_index = instrument_weights.index
-        new_pd_as_dict = dict(
-            [
-                (instrument_code, pd.Series([0.0] * len(weight_index)))
-                for instrument_code in instrument_list_to_add
-            ]
-        )
-        new_pd = pd.DataFrame(new_pd_as_dict)
 
-        padded_instrument_weights = pd.concat([instrument_weights, new_pd], axis=1)
+        padded_instrument_weights = copy(instrument_weights)
+        for zero_instr in instrument_list_to_add:
+            padded_instrument_weights[zero_instr] = 0.0
 
         return padded_instrument_weights
 
